@@ -101,8 +101,8 @@ export default {
       // api 伺服器路徑 + 所申請的的 API Path
       const api = `${process.env.VUE_APP_SPRINGBOOT_PORT}/login`
       console.log(api)
-      const vm = this
-      console.log(vm.user)
+      // const vm = this
+      // console.log(vm.user)
     }
   }
 }
