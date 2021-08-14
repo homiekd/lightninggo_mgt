@@ -1,22 +1,53 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Login from '../views/Login.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: '*',
+    redirect: 'login'
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/',
+    component: Home,
+    redirect: '/dashboard',
+    children: [
+      // 首頁 > 系統首頁
+      {
+        path: '/dashboard',
+        name: 'dashboard',
+        component: () => import('@/views/dashboard/Dashboard'),
+        meta: {
+          breadcrumb: [{ text: '系統首頁' }]
+        }
+      },
+      // 庫存管理 > 產品列表
+      {
+        path: '/inProductMgt/productList',
+        name: 'ProductList',
+        component: () => import('@/views/inProductMgt/productList/ProductList'),
+        meta: {
+          breadcrumb: [{ text: '產品管理' }, { text: '產品列表' }]
+        }
+      },
+      // 庫存管理 > 產品列表
+      {
+        path: '/inProductMgt/test',
+        name: 'Test',
+        component: () => import('@/views/inProductMgt/test/Test'),
+        meta: {
+          breadcrumb: [{ text: '產品管理' }, { text: '產品種類' }]
+        }
+      }
+    ]
   }
 ]
 
