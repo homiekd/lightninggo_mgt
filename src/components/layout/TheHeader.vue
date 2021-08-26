@@ -17,7 +17,7 @@
         class="header__logo"
         v-if="$vuetify.breakpoint.smAndUp"
       >
-        <!-- <v-img :src="require('@/assets/logo_2.png')"></v-img> -->
+<!--         <v-img :src="require('@/assets/logo.png')"></v-img>-->
       </router-link>
     </div>
 

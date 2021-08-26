@@ -5,6 +5,14 @@
         fluid
         fill-height
       >
+        <v-snackbar v-model="snackbar" :timeout="timeout">
+          {{ text }}
+          <template v-slot:action="{ attrs }">
+            <v-btn  color="pink" text v-bind="attrs" @click="snackbar = false">
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
         <v-layout
           align-center
           justify-center
@@ -28,7 +36,7 @@
                   lazy-validation
                 >
                   <v-text-field
-                    v-model="user.username"
+                    v-model="sysUser.username"
                     :rules="emailRules"
                     prepend-icon="mdi-account"
                     name="username"
@@ -38,7 +46,7 @@
                   ></v-text-field>
                   <v-text-field
                     id="password"
-                    v-model="user.password"
+                    v-model="sysUser.password"
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="[passwordRules.required, passwordRules.min]"
                     :type="show1 ? 'text' : 'password'"
@@ -77,7 +85,10 @@ export default {
     return {
       show1: false,
       valid: true,
-      user: {
+      snackbar: false,
+      text: '',
+      timeout: 2000,
+      sysUser: {
         username: '',
         password: ''
       },
@@ -99,10 +110,21 @@ export default {
     },
     login () {
       // api 伺服器路徑 + 所申請的的 API Path
-      const api = `${process.env.VUE_APP_SPRINGBOOT_PORT}/login`
-      console.log(api)
-      // const vm = this
-      // console.log(vm.user)
+      const api = `${process.env.VUE_APP_SPRINGBOOT_PORT}/sys/login`
+      const vm = this
+      this.axios.post(api, vm.sysUser).then((response) => {
+        console.log(response.data)
+        if (response.data.code === 200) {
+          const tokenBody = response.data.data
+          const tokenHead = tokenBody.tokenHead
+          const token = tokenBody.token
+          vm.$store.commit('settings/setToken', tokenHead + token)
+          vm.$router.push('/dashboard')
+        } else {
+          this.snackbar = true
+          this.text = response.data.data
+        }
+      })
     }
   }
 }

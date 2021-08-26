@@ -10,6 +10,7 @@ import '@mdi/font/css/materialdesignicons.css' // Ensure you are using css-loade
 import '@/cores/autoGlobalBase' // [ 自動全局註冊基本組件 ]
 
 Vue.config.productionTip = false
+axios.defaults.withCredentials = true
 
 Vue.use(VueAxios, axios)
 

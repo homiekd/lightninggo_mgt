@@ -20,7 +20,6 @@ const vuexLocal = new VuexPersistence({
     },
     // [ 用戶登入相關 ]
     user: {
-
     }
   })
 })

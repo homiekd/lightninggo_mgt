@@ -18,6 +18,7 @@ const routes = [
   {
     path: '/',
     component: Home,
+    meta: { requiresAuth: true },
     redirect: '/dashboard',
     children: [
       // 首頁 > 系統首頁
@@ -35,6 +36,7 @@ const routes = [
         name: 'ProductList',
         component: () => import('@/views/inProductMgt/productList/ProductList'),
         meta: {
+          meta: { requiresAuth: true },
           breadcrumb: [{ text: '產品管理' }, { text: '產品列表' }]
         }
       },
