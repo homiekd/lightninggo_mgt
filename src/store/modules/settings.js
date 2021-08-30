@@ -5,8 +5,7 @@ const state = {
     lock: true
   },
   drawer: true,
-  primaryColor: '#BB9D8D',
-  token: sessionStorage.getItem('token')
+  primaryColor: '#BB9D8D'
 }
 
 // [ Mutations Types ]
@@ -22,10 +21,6 @@ const mutations = {
 
   [types.SET_DRAWER] (state, payload) {
     state.drawer = payload
-  },
-  setToken (state, data) {
-    state.token = data
-    sessionStorage.setItem('token', data)
   }
 }
 

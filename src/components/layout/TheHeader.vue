@@ -16,9 +16,11 @@
         custom
         class="header__logo"
         v-if="$vuetify.breakpoint.smAndUp"
-      >
-<!--         <v-img :src="require('@/assets/logo.png')"></v-img>-->
+      ><v-img max-height="34"
+              max-width="34"
+              :src="require('@/assets/lightningGo.png')"></v-img>
       </router-link>
+      <span id="logo">閃電購物後台管理系統</span>
     </div>
 
     <!-- 撐開中間寬度 -->
@@ -37,7 +39,7 @@
         height="36"
         icon
         @click="logout">
-          <v-icon size="18">fa-sign-out-alt</v-icon>
+          <v-icon size="18">mdi-logout-variant</v-icon>
       </v-btn>
     </div>
   </v-app-bar>
@@ -79,5 +81,16 @@ export default {
     display: flex;
     align-items: center;
   }
+}
+#logo{
+  font-size: 22px;
+  font-weight: bold;
+  background: #FFEFBA;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #FFFFFF, #FFEFBA);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #FFFFFF, #FFEFBA); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background-clip: inherit;
+  -webkit-background-clip: text;
+  color: transparent;
+  margin-left: 8px;
 }
 </style>

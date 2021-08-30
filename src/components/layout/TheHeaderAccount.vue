@@ -22,14 +22,14 @@
       <v-list-item dense>
         <v-list-item-content>
           <v-list-item-title>
-            最高管理者
+            放role
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
       <v-list-item dense>
         <v-list-item-content>
-          <v-list-item-title>kdwu</v-list-item-title>
+          <v-list-item-title>放username</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </template>

@@ -5,14 +5,6 @@
         fluid
         fill-height
       >
-        <v-snackbar v-model="snackbar" :timeout="timeout">
-          {{ text }}
-          <template v-slot:action="{ attrs }">
-            <v-btn  color="pink" text v-bind="attrs" @click="snackbar = false">
-              Close
-            </v-btn>
-          </template>
-        </v-snackbar>
         <v-layout
           align-center
           justify-center
@@ -60,7 +52,7 @@
                 </v-form>
               </v-card-text>
               <v-card-actions>
-                <v-spacer />
+                <v-spacer></v-spacer>
                 <v-btn
                   color="primary"
                   :disabled="!valid"
@@ -85,9 +77,6 @@ export default {
     return {
       show1: false,
       valid: true,
-      snackbar: false,
-      text: '',
-      timeout: 2000,
       sysUser: {
         username: '',
         password: ''
@@ -110,19 +99,14 @@ export default {
     },
     login () {
       // api 伺服器路徑 + 所申請的的 API Path
-      const api = `${process.env.VUE_APP_SPRINGBOOT_PORT}/sys/login`
+      const api = '/sys/login'
       const vm = this
-      this.axios.post(api, vm.sysUser).then((response) => {
-        console.log(response.data)
+      this.$https.post(api, vm.sysUser).then((response) => {
         if (response.data.code === 200) {
           const tokenBody = response.data.data
-          const tokenHead = tokenBody.tokenHead
           const token = tokenBody.token
-          vm.$store.commit('settings/setToken', tokenHead + token)
+          vm.$store.commit('setToken', token)
           vm.$router.push('/dashboard')
-        } else {
-          this.snackbar = true
-          this.text = response.data.data
         }
       })
     }
@@ -131,5 +115,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

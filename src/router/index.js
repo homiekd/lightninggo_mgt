@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
+import store from '@/store'
+import https from '@/utils/https'
 
 Vue.use(VueRouter)
 
@@ -60,3 +62,41 @@ const router = new VueRouter({
 })
 
 export default router
+
+/**
+ * 路由導航
+ * to: 將要去到哪個頁面
+ * from: 從哪個頁面過來
+ * next: 放行到哪個頁面
+ */
+router.beforeEach((to, from, next) => {
+  const token = sessionStorage.getItem('token')
+  // 判斷用戶使否登入
+  if (!token) {
+    if (to.path === '/login') {
+      next()
+    } else {
+      // next({ path: '/login' })
+      next(`/login?redirect=${to.fullPath}`)
+    }
+  } else {
+    // 判斷vuex中是否存在用戶基本訊息
+    if (!store.state.roles || store.state.roles.length < 1) {
+      // 像後端發送請求，取得用戶基本訊息
+      const api = '/sys/getInfo'
+      https.get(api).then((res) => {
+        const user = res.data.data
+        store.commit('setName', user.username)
+        if (user.sysUserRoles.length > 0) {
+          //
+        }
+      })
+    }
+    // 已經登入成功
+    if (to.path === '/login') {
+      next('/')
+    } else {
+      next()
+    }
+  }
+})
