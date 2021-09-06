@@ -6,7 +6,7 @@
     <v-main>
       <v-container fluid class="px-lg-12">
         <v-slide-x-transition mode="out-in">
-          <!-- <the-breadcrumb :key="$route.fullPath"></the-breadcrumb> -->
+          <the-breadcrumb :key="$route.fullPath"></the-breadcrumb>
         </v-slide-x-transition>
 
         <v-fade-transition mode="out-in">
@@ -20,13 +20,14 @@
 <script>
 import TheHeader from '@/components/layout/TheHeader'
 import TheSidebar from '@/components/layout/TheSidebar'
+import TheBreadcrumb from '@/components/layout/TheBreadcrumb'
 
 export default {
   name: 'Home',
-
   components: {
     TheHeader,
-    TheSidebar
+    TheSidebar,
+    TheBreadcrumb
   }
 }
 </script>

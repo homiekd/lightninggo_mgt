@@ -7,7 +7,7 @@
           class="my-3"
           contain
           height="200"
-        />
+        ></v-img>
       </v-col>
 
       <v-col class="mb-4">

@@ -21,11 +21,11 @@ export default {
         children: [
           {
             title: '產品列表',
-            path: '/inProductMgt/productList'
+            path: '/productMgt/productList'
           },
           {
             title: '產品種類',
-            path: '/inProductMgt/test'
+            path: '/productMgt/test'
           }
         ]
       }

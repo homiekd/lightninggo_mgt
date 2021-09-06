@@ -1,31 +1,29 @@
-import Vue from 'vue'
 import axios from 'axios'
 import store from '@/store'
 import router from '@/router'
 import snackbar from '@/components/snackbar'
 
-/**
- * 創建ajax實體
- * 設置請求超時時間
- */
-const https = axios.create({
-  timeout: 600000
-})
+axios.defaults.timeout = 600000
+// axios.defaults.baseURL = process.env.VUE_APP_WEB_API
 
 // [ Request 攔截器 ]
-https.interceptors.request.use((config) => {
+axios.interceptors.request.use((config) => {
   // 如果有 token 則帶入 header
   if (store.state.token) {
     config.headers.Authorization = `Bearer ${store.state.token}`
   }
   return config
 }, (err) => {
-  console.log('請求異常' + err)
+  // 拋出錯誤
+  snackbar.message({
+    color: 'error',
+    message: 'request異常: ' + err.response.data.message
+  })
+  return Promise.reject(err)
 })
 
 // [ Response 攔截器 ]
-https.interceptors.response.use((response) => {
-  // 其他再補充
+axios.interceptors.response.use((response) => {
   return response
 }, (error) => {
   // 對不同狀態進行處理
@@ -77,6 +75,4 @@ https.interceptors.response.use((response) => {
   return Promise.reject(error)
 })
 
-Vue.prototype.$https = https
-
-export default https
+export default axios

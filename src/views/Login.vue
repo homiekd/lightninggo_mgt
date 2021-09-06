@@ -71,6 +71,8 @@
 </template>
 
 <script>
+import SysUserService from '@/services/sysUser'
+
 export default {
   name: 'Login',
   data () {
@@ -97,18 +99,27 @@ export default {
         this.login()
       }
     },
-    login () {
-      // api 伺服器路徑 + 所申請的的 API Path
-      const api = '/sys/login'
-      const vm = this
-      this.$https.post(api, vm.sysUser).then((response) => {
-        if (response.data.code === 200) {
-          const tokenBody = response.data.data
-          const token = tokenBody.token
-          vm.$store.commit('setToken', token)
-          vm.$router.push('/dashboard')
+    async login () {
+      const dataResponse = await SysUserService.login(this.sysUser)
+      if (dataResponse && dataResponse.status === 200 && dataResponse.data.code === 200) {
+        const loginData = dataResponse.data.data
+        const token = loginData.token
+        const username = loginData.username
+        const roles = loginData.roles
+        let rolesArr = []
+        if (roles) {
+          rolesArr = roles.split(';')
         }
-      })
+        this.$store.commit('setToken', token)
+        this.$store.commit('setName', username)
+        this.$store.commit('setRoles', rolesArr)
+        this.$router.push('/dashboard')
+      } else {
+        this.$message({
+          color: 'error',
+          message: dataResponse.data.data == null ? dataResponse.data.message : dataResponse.data.data
+        })
+      }
     }
   }
 }

@@ -2,8 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
-import store from '@/store'
-import https from '@/utils/https'
+// import store from '@/store'
+// import https from '@/cores/https'
 
 Vue.use(VueRouter)
 
@@ -32,23 +32,23 @@ const routes = [
           breadcrumb: [{ text: '系統首頁' }]
         }
       },
-      // 庫存管理 > 產品列表
+      // 商品管理 > 商品列表
       {
-        path: '/inProductMgt/productList',
+        path: '/productMgt/productList',
         name: 'ProductList',
-        component: () => import('@/views/inProductMgt/productList/ProductList'),
+        component: () => import('@/views/productMgt/productList/ProductList'),
         meta: {
           meta: { requiresAuth: true },
-          breadcrumb: [{ text: '產品管理' }, { text: '產品列表' }]
+          breadcrumb: [{ text: '商品管理' }, { text: '商品列表' }]
         }
       },
       // 庫存管理 > 產品列表
       {
-        path: '/inProductMgt/test',
+        path: '/productMgt/test',
         name: 'Test',
-        component: () => import('@/views/inProductMgt/test/Test'),
+        component: () => import('@/views/productMgt/test/Test'),
         meta: {
-          breadcrumb: [{ text: '產品管理' }, { text: '產品種類' }]
+          breadcrumb: [{ text: '商品管理' }, { text: '商品種類' }]
         }
       }
     ]
@@ -71,32 +71,9 @@ export default router
  */
 router.beforeEach((to, from, next) => {
   const token = sessionStorage.getItem('token')
-  // 判斷用戶使否登入
-  if (!token) {
-    if (to.path === '/login') {
-      next()
-    } else {
-      // next({ path: '/login' })
-      next(`/login?redirect=${to.fullPath}`)
-    }
+  if (token) {
+    next()
   } else {
-    // 判斷vuex中是否存在用戶基本訊息
-    if (!store.state.roles || store.state.roles.length < 1) {
-      // 像後端發送請求，取得用戶基本訊息
-      const api = '/sys/getInfo'
-      https.get(api).then((res) => {
-        const user = res.data.data
-        store.commit('setName', user.username)
-        if (user.sysUserRoles.length > 0) {
-          //
-        }
-      })
-    }
-    // 已經登入成功
-    if (to.path === '/login') {
-      next('/')
-    } else {
-      next()
-    }
+    if (to.path !== '/login') { next('/login') } else { next() }
   }
 })

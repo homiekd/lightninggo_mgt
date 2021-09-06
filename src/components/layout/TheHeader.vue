@@ -5,20 +5,24 @@
     dense
     clipped-left
     class="header"
-    color="primary">
+    color="primary"
+  >
     <!-- 左側收合按鈕/LOGO -->
     <div class="header__left">
       <v-app-bar-nav-icon @click.stop="drawerToggle"></v-app-bar-nav-icon>
 
       <!-- LOGO -->
       <router-link
+        v-if="$vuetify.breakpoint.smAndUp"
         to="/"
         custom
         class="header__logo"
-        v-if="$vuetify.breakpoint.smAndUp"
-      ><v-img max-height="34"
-              max-width="34"
-              :src="require('@/assets/lightningGo.png')"></v-img>
+      >
+        <v-img
+          max-height="34"
+          max-width="34"
+          :src="require('@/assets/lightningGo.png')"
+        ></v-img>
       </router-link>
       <span id="logo">閃電購物後台管理系統</span>
     </div>
@@ -38,8 +42,11 @@
         width="36"
         height="36"
         icon
-        @click="logout">
-          <v-icon size="18">mdi-logout-variant</v-icon>
+        @click="logout"
+      >
+        <v-icon size="18">
+          mdi-logout-variant
+        </v-icon>
       </v-btn>
     </div>
   </v-app-bar>
@@ -47,6 +54,7 @@
 
 <script>
 import TheHeaderAccount from '@/components/layout/TheHeaderAccount'
+import SysUserService from '@/services/sysUser'
 
 export default {
   name: 'TheHeader',
@@ -60,8 +68,21 @@ export default {
       this.$store.commit('settings/SET_DRAWER', !this.$store.state.settings.drawer)
     },
 
-    logout () {
-      this.$store.dispatch('user/logout', 1)
+    async logout () {
+      const dataResponse = await SysUserService.logout()
+      if (dataResponse && dataResponse.status === 200 && dataResponse.data.code === 200) {
+        // 清空本地緩存
+        sessionStorage.clear()
+        localStorage.clear()
+        // 跳轉到登入
+        this.$router.replace('/login')
+      } else {
+        this.$message({
+          color: 'error',
+          message: dataResponse.data.data == null ? dataResponse.data.message : dataResponse.data.data
+        })
+      }
+      // this.$store.dispatch('user/logout', 1)
     }
   }
 }

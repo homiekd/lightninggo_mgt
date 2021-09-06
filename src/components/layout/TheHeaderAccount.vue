@@ -19,17 +19,22 @@
     </template>
 
     <template #content>
+      <v-subheader>角色</v-subheader>
       <v-list-item dense>
         <v-list-item-content>
-          <v-list-item-title>
-            放role
+          <v-list-item-title
+            v-for="role in roles"
+            :key="role"
+          >
+            {{ role }}
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
+      <v-subheader>使用者</v-subheader>
       <v-list-item dense>
         <v-list-item-content>
-          <v-list-item-title>放username</v-list-item-title>
+          <v-list-item-title>{{ username }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </template>
@@ -38,9 +43,16 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import SysUserService from '@/services/sysUser'
 
 export default {
   name: 'TheHeaderAccount',
+  data () {
+    return {
+      username: this.$store.state.name,
+      roles: this.$store.state.roles
+    }
+  },
 
   computed: {
     ...mapGetters('user', ['identity'])
@@ -50,9 +62,19 @@ export default {
     ...mapActions('user', ['setShowEditPassword']),
 
     // [ 編輯個人密碼 ]
-    editPassword () {
+    async editPassword () {
+      const dataResponse = await SysUserService.getInfo()
+      if (dataResponse && dataResponse.status === 200 && dataResponse.data.code === 200) {
+        console.log('取得後台使用者基本訊息: ', dataResponse)
+      } else {
+        this.$message({
+          color: 'error',
+          message: dataResponse.data.data == null ? dataResponse.data.message : dataResponse.data.data
+        })
+      }
+
       // 更改密碼狀態存入 store
-      this.setShowEditPassword(true)
+      // this.setShowEditPassword(true)
     }
   }
 }

@@ -4,17 +4,18 @@ module.exports = {
     port: 8888,
     // 設置是否啟動時打開瀏覽器
     open: true,
-    // 設置代理
+    // 配置跨域
     proxy: {
-      // 代理的根路徑
-      '/': {
-        // 代理的後端路徑
-        target: 'http://localhost:8181',
-        // 是否開啟根路徑轉換
-        changeOrigin: true,
-        // 代理路徑更改
-        pathReWrite: {
-          '^/': '/'
+      // Springboot後台api
+      '/api': {
+        target: 'http://localhost:8181/',
+        // 如果要代理 websockets
+        ws: true,
+        // 允許跨域
+        changOrigin: true,
+        // 請求的時候使用這個api就可以
+        pathRewrite: {
+          '^/api': ''
         }
       }
     }

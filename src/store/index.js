@@ -20,6 +20,9 @@ const vuexLocal = new VuexPersistence({
     },
     // [ 用戶登入相關 ]
     user: {
+      name: sessionStorage.getItem('name') || '',
+      roles: JSON.parse(sessionStorage.getItem('roles') || '[]'),
+      permissions: JSON.parse(sessionStorage.getItem('permissions') || '[]')
     }
   })
 })
@@ -37,21 +40,21 @@ export default new Vuex.Store({
       sessionStorage.setItem('token', data)
     },
     setName (state, data) {
-      state.token = data
+      state.name = data
       sessionStorage.setItem('name', data)
     },
     /**
      * 儲存角色訊息
      */
     setRoles (state, data) {
-      state.token = data
+      state.roles = data
       sessionStorage.setItem('roles', JSON.stringify(data))
     },
     /**
      * 儲存權限訊息
      */
     setPermissions (state, data) {
-      state.token = data
+      state.permissions = data
       sessionStorage.setItem('permissions', JSON.stringify(data))
     }
   },
