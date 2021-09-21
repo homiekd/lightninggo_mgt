@@ -32,23 +32,53 @@ const routes = [
           breadcrumb: [{ text: '系統首頁' }]
         }
       },
-      // 商品管理 > 商品列表
+      // 系統配置 > 用戶管理
       {
-        path: '/productMgt/productList',
-        name: 'ProductList',
-        component: () => import('@/views/productMgt/productList/ProductList'),
+        path: '/systemMgt/userMgt',
+        name: 'UserMgt',
+        component: () => import('@/views/systemMgt/userMgt/UserMgt'),
         meta: {
           meta: { requiresAuth: true },
-          breadcrumb: [{ text: '商品管理' }, { text: '商品列表' }]
+          breadcrumb: [{ text: '系統配置' }, { text: '用戶管理' }]
         }
       },
-      // 庫存管理 > 產品列表
+      // 系統配置 > 角色管理
       {
-        path: '/productMgt/test',
-        name: 'Test',
-        component: () => import('@/views/productMgt/test/Test'),
+        path: '/systemMgt/roleMgt',
+        name: 'RoleMgt',
+        component: () => import('@/views/systemMgt/roleMgt/RoleMgt'),
         meta: {
-          breadcrumb: [{ text: '商品管理' }, { text: '商品種類' }]
+          meta: { requiresAuth: true },
+          breadcrumb: [{ text: '系統配置' }, { text: '角色管理' }]
+        }
+      },
+      // 系統配置 > 權限管理
+      {
+        path: '/systemMgt/permissionMgt',
+        name: 'PermissionMgt',
+        component: () => import('@/views/systemMgt/permissionMgt/PermissionMgt'),
+        meta: {
+          meta: { requiresAuth: true },
+          breadcrumb: [{ text: '系統配置' }, { text: '權限管理' }]
+        }
+      },
+      // 商品管理 > 品牌管理
+      {
+        path: '/productMgt/productBrandMgt',
+        name: 'ProductBrandMgt',
+        component: () => import('@/views/productMgt/productBrandMgt/ProductBrandMgt'),
+        meta: {
+          meta: { requiresAuth: true },
+          breadcrumb: [{ text: '商品管理' }, { text: '品牌管理' }]
+        }
+      },
+      // 商品管理 > 測試
+      {
+        path: '/productMgt/productCategoriesMgt',
+        name: 'ProductCategoriesMgt',
+        component: () => import('@/views/productMgt/productCategoriesMgt/ProductCategoriesMgt'),
+        meta: {
+          breadcrumb: [{ text: '商品管理' }, { text: '分類管理' }]
         }
       }
     ]

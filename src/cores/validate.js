@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { ValidationObserver, ValidationProvider, extend } from 'vee-validate'
+import { ValidationObserver, ValidationProvider, extend, configure } from 'vee-validate'
 import {
   regex,
   required,
@@ -19,15 +19,15 @@ import {
   mimes,
   is_not // eslint-disable-line
 } from 'vee-validate/dist/rules'
-// import i18n from './locale'
+import i18n from './locale'
 import moment from 'moment'
 
-// configure({
-//   defaultMessage: (field, values) => {
-//     values._field_ = i18n.t(field)
-//     return i18n.t(`validation.${values._rule_}`, values)
-//   }
-// })
+configure({
+  defaultMessage: (field, values) => {
+    values._field_ = i18n.t(field)
+    return i18n.t(`validation.${values._rule_}`, values)
+  }
+})
 
 extend('regex', regex)
 extend('required', required)

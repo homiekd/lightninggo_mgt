@@ -17,15 +17,32 @@ export default {
   data: () => ({
     menu: [
       {
-        title: '產品管理',
+        title: '系統配置',
         children: [
           {
-            title: '產品列表',
-            path: '/productMgt/productList'
+            title: '用戶管理',
+            path: '/systemMgt/userMgt'
           },
           {
-            title: '產品種類',
-            path: '/productMgt/test'
+            title: '角色管理',
+            path: '/systemMgt/roleMgt'
+          },
+          {
+            title: '權限管理',
+            path: '/systemMgt/permissionMgt'
+          }
+        ]
+      },
+      {
+        title: '商品管理',
+        children: [
+          {
+            title: '品牌管理',
+            path: '/productMgt/productBrandMgt'
+          },
+          {
+            title: '分類管理',
+            path: '/productMgt/productCategoriesMgt'
           }
         ]
       }

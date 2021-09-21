@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <base-searchbar title="商品列表">
+      <base-searchbar title="品牌列表">
         <v-row dense>
           <!-- 品牌編碼 -->
           <v-col cols="6" md="3">
@@ -64,6 +64,7 @@
           <v-btn
             color="white"
             class="primary--text"
+            @click="add"
           >
             新增
           </v-btn>
@@ -84,12 +85,12 @@
           </template>
 
           <!-- 狀態 -->
-          <template #Status="{ item }">
+          <template #state="{ item }">
             <v-chip
               dark
               small
-              :color="item.Status === 1 ? 'success' : 'error'"
-              v-text="item.Status === 1 ? '啟用' : '停用'"
+              :color="item.state === true ? 'success' : 'error'"
+              v-text="item.state === true ? '啟用' : '停用'"
             ></v-chip>
           </template>
 
@@ -115,18 +116,27 @@
     </v-col>
 
     <!-- dialog 彈窗 -->
+    <!-- 新增 -->
+    <ProductBrandMgtAdd v-model="dialog.add.show"></ProductBrandMgtAdd>
+    <!-- 新增 -->
+    <ProductBrandMgtEdit v-model="dialog.edit.show"></ProductBrandMgtEdit>
     <!-- 刪除 -->
-    <ProductListRemove v-model="dialog.remove.show"></ProductListRemove>
+    <ProductBrandMgtRemove v-model="dialog.remove.show"></ProductBrandMgtRemove>
   </v-row>
 </template>
 
 <script>
-import ProductListRemove from './ProductListRemove'
+import ProductBrandService from '@/services/productBrand'
+import ProductBrandMgtAdd from './ProductBrandMgtAdd'
+import ProductBrandMgtEdit from './ProductBrandMgtEdit'
+import ProductBrandMgtRemove from './ProductBrandMgtRemove'
 
 export default {
-  name: 'ProductList',
+  name: 'ProductBrandMgt',
   components: {
-    ProductListRemove
+    ProductBrandMgtAdd,
+    ProductBrandMgtEdit,
+    ProductBrandMgtRemove
   },
 
   data: () => ({
@@ -140,49 +150,49 @@ export default {
       },
       {
         text: '品牌編碼',
-        value: 'brand',
+        value: 'code',
         align: 'center',
         customized: false,
         width: 100
       },
       {
         text: '品牌名稱',
-        value: 'brand',
+        value: 'name',
         align: 'center',
         customized: false,
         width: 100
       },
       {
         text: '品牌網站',
-        value: 'brand',
+        value: 'url',
         align: 'center',
         customized: false,
         width: 100
       },
       {
         text: '品牌描述',
-        value: 'brand',
+        value: 'description',
         align: 'center',
         customized: false,
         width: 100
       },
       {
         text: '排序',
-        value: 'brand',
+        value: 'sort',
         align: 'center',
         customized: false,
         width: 100
       },
       {
         text: '狀態',
-        value: 'Status',
+        value: 'state',
         align: 'center',
         customized: true,
         width: 100
       },
       {
         text: '建立時間',
-        value: 'brand',
+        value: 'createdDate',
         align: 'center',
         customized: false,
         width: 100
@@ -196,13 +206,11 @@ export default {
       }
     ],
 
-    dataSource: [
-      {
-        brand: 'coffee'
-      }
-    ],
+    dataSource: [],
 
     dialog: {
+      add: { show: false },
+      edit: { show: false },
       remove: { show: false }
     },
 
@@ -213,16 +221,36 @@ export default {
     }
 
   }),
+
+  mounted () {
+    this.dataBind()
+  },
+
   methods: {
+    // [ 取品牌列表 ]
+    async dataBind () {
+      const dataResponse = await ProductBrandService.getMany(this.filter)
+      await this.sharedResponse(dataResponse, { useSuccessMessage: false })
+      console.log('dataResponse.data: ', dataResponse.data)
+      this.dataSource = dataResponse.data.data
+    },
+
+    // [ 新增 ]
+    add (item) {
+      console.log('新增商品品牌')
+      this.dialog.add.show = true
+    },
+
     // [ 編輯 ]
     edit (item) {
-      console.log('編輯')
+      console.log('編輯商品品牌')
+      this.dialog.edit.show = true
     },
 
     // [ 刪除 ]
     remove (item) {
+      console.log('刪除商品品牌')
       this.dialog.remove.show = true
-      console.log('刪除')
     },
 
     // [ 換頁 ]

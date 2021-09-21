@@ -1,21 +1,32 @@
 <template>
   <v-dialog
     :value="value"
-    @input="$emit('input', $event)"
     :max-width="maxWidth"
     :fullscreen="fullscreen"
     :hide-overlay="hideOverlay"
     :persistent="persistent"
     :transition="transition"
     :scrollable="scrollable"
+    @input="$emit('input', $event)"
   >
     <v-card :dark="dark" :color="color">
       <!-- Fullscreen 模式下顯示的標題 -->
-      <v-toolbar v-if="fullscreen && title" dark color="primary" height="48" class="mb-6">
-        <v-btn v-if="!disabledClose" icon dark @click="$emit('input', false)">
+      <v-toolbar
+        v-if="fullscreen && title"
+        dark
+        color="primary"
+        height="48"
+        class="mb-6"
+      >
+        <v-btn
+          v-if="!disabledClose"
+          icon
+          dark
+          @click="$emit('input', false)"
+        >
           <v-icon>mdi-close</v-icon>
         </v-btn>
-        <v-toolbar-title v-text="title" class="text-subtitle-1"></v-toolbar-title>
+        <v-toolbar-title class="text-subtitle-1" v-text="title"></v-toolbar-title>
       </v-toolbar>
 
       <!-- 非 Fullscreen 模式下顯示的標題 -->
@@ -23,7 +34,9 @@
         <span v-if="title" v-text="title"></span>
         <v-spacer></v-spacer>
         <v-btn v-if="!disabledClose" icon>
-          <v-icon @click="$emit('input', false)">mdi-close</v-icon>
+          <v-icon @click="$emit('input', false)">
+            mdi-close
+          </v-icon>
         </v-btn>
       </v-card-title>
 
@@ -70,15 +83,15 @@ export default {
     }
   },
 
-  watch: {
-    value(val) {
-      if (!val) document.getElementsByClassName('v-dialog--active')[0].scrollTop = 0
+  computed: {
+    transition () {
+      return this.fullscreen ? 'dialog-bottom-transition' : 'dialog-transition'
     }
   },
 
-  computed: {
-    transition() {
-      return this.fullscreen ? 'dialog-bottom-transition' : 'dialog-transition'
+  watch: {
+    value (val) {
+      if (!val) document.getElementsByClassName('v-dialog--active')[0].scrollTop = 0
     }
   }
 }

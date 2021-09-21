@@ -79,7 +79,7 @@ export default {
   },
 
   computed: {
-    isDense() {
+    isDense () {
       return this.outlined || this.filled || this.dense
     }
   }
