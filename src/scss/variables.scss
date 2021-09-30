@@ -1,0 +1,32 @@
+/**
+ * 此檔案僅提供以下用途
+ * 1. 覆蓋 Vuetify 的預設 SASS 變數
+ * 2. 自定義變數
+ * ! 請勿撰寫任何非變數的CSS於此，否則重複渲染多餘的CSS至每一個組件
+ * ! 變更此文件會使該次編譯速度變慢，因為會實時更新樣式
+ */
+
+// [ Navy Color ]
+$navy-500: #3c4252 !important;
+$navy-600: #353a48 !important;
+$navy-700: #2d323e !important;
+$navy-800: #262933 !important;
+$navy-900: #1e2129 !important;
+
+// [ Vuetify ]
+$body-font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+$list-item-dense-title-font-size: 14px;
+$list-item-dense-title-line-height: 20px;
+$text-field-details-margin-bottom: 0;
+
+$material-dark: (
+  'status-bar': (
+    'regular': #27272f
+  ),
+  'background': #33333d,
+  'cards': #373740,
+  'tabs': rgba(255, 255, 255, .3),
+  'picker': (
+    'body': #373740
+  )
+);

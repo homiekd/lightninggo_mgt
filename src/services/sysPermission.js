@@ -5,9 +5,12 @@ export default {
     return axios.post('/api/SysPermission/Add', data)
   },
   update (data) {
-    return axios.post('/api/SysPermission/Update', data)
+    return axios.put('/api/SysPermission/Update', data)
   },
   getMany (data) {
-    return axios.get('/api/SysPermission/FindPage', data)
+    return axios.post('/api/SysPermission/FindPage', data)
+  },
+  get (data) {
+    return axios.get('/api/SysPermission/Get/' + data)
   }
 }

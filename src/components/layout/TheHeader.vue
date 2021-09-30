@@ -54,7 +54,6 @@
 
 <script>
 import TheHeaderAccount from '@/components/layout/TheHeaderAccount'
-import SysUserService from '@/services/sysUser'
 
 export default {
   name: 'TheHeader',
@@ -68,21 +67,8 @@ export default {
       this.$store.commit('settings/SET_DRAWER', !this.$store.state.settings.drawer)
     },
 
-    async logout () {
-      const dataResponse = await SysUserService.logout()
-      if (dataResponse && dataResponse.status === 200 && dataResponse.data.code === 200) {
-        // 清空本地緩存
-        sessionStorage.clear()
-        localStorage.clear()
-        // 跳轉到登入
-        this.$router.replace('/login')
-      } else {
-        this.$message({
-          color: 'error',
-          message: dataResponse.data.data == null ? dataResponse.data.message : dataResponse.data.data
-        })
-      }
-      // this.$store.dispatch('user/logout', 1)
+    logout () {
+      this.$store.dispatch('user/logout')
     }
   }
 }

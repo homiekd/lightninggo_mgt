@@ -31,16 +31,36 @@
 </template>
 
 <script>
+import ProductBrandService from '@/services/productBrand'
+
 export default {
   name: 'ProductBrandMgtRemove',
 
   props: {
-    value: Boolean
+    value: Boolean,
+    id: {
+      type: Number,
+      default: -1
+    }
   },
 
   methods: {
     // [ 表單送出 ]
-    submit () {},
+    async submit () {
+      try {
+        const payload = this.id
+
+        const dataResponse = await ProductBrandService.delete(payload)
+
+        await this.sharedResponse(dataResponse)
+
+        this.close()
+
+        this.$emit('afterSubmit')
+      } catch (error) {
+        this.showError(error)
+      }
+    },
 
     // [ 關閉視窗 ]
     close () {
@@ -49,7 +69,9 @@ export default {
     },
 
     // [ 重置表單內容 ]
-    reset () {}
+    reset () {
+      this.$emit('update:id', -1)
+    }
   }
 }
 </script>

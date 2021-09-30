@@ -1,0 +1,27 @@
+/**
+ * 任何自訂全局樣式請寫在這邊
+ */
+
+html { overflow-y: auto }
+
+html:lang(zh-CN) .v-application {
+  font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+}
+
+html:lang(zh-TW) .v-application {
+  font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+}
+
+// vuetify input:filled 樣式修正
+.v-text-field.v-input--dense.v-text-field--filled input {
+  padding: 8px 0 8px;
+}
+
+.v-select.v-input--dense.v-text-field--filled .v-select__selection--comma {
+  margin: 8px 4px 8px 0;
+}
+
+// v-permission
+.permission-hide {
+  display: none;
+}

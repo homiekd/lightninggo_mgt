@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
-// import store from '@/store'
+import store from '@/store'
 // import https from '@/cores/https'
 
 Vue.use(VueRouter)
@@ -100,7 +100,7 @@ export default router
  * next: 放行到哪個頁面
  */
 router.beforeEach((to, from, next) => {
-  const token = sessionStorage.getItem('token')
+  const token = store.state.user.accessToken
   if (token) {
     next()
   } else {

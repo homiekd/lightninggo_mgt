@@ -23,7 +23,7 @@
       <v-list-item dense>
         <v-list-item-content>
           <v-list-item-title
-            v-for="role in roles"
+            v-for="role in identity.roles"
             :key="role"
           >
             {{ role }}
@@ -34,7 +34,7 @@
       <v-subheader>使用者</v-subheader>
       <v-list-item dense>
         <v-list-item-content>
-          <v-list-item-title>{{ username }}</v-list-item-title>
+          <v-list-item-title>{{ identity.username }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </template>
@@ -47,12 +47,6 @@ import SysUserService from '@/services/sysUser'
 
 export default {
   name: 'TheHeaderAccount',
-  data () {
-    return {
-      username: this.$store.state.name,
-      roles: this.$store.state.roles
-    }
-  },
 
   computed: {
     ...mapGetters('user', ['identity'])

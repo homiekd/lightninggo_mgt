@@ -48,6 +48,7 @@
         <!-- 標題尾端插槽 -->
         <template #title-append>
           <v-btn
+            v-permission="'userMgt_add'"
             color="white"
             class="primary--text"
             @click="add"
@@ -64,7 +65,12 @@
         >
           <!-- 刪除按鈕 -->
           <template #Remove="{ item }">
-            <v-btn icon color="red" @click="remove(item)">
+            <v-btn
+              v-permission="'userMgt_remove'"
+              icon
+              color="red"
+              @click="remove(item)"
+            >
               <v-icon size="20">
                 mdi-trash-can-outline
               </v-icon>
@@ -92,7 +98,11 @@
 
           <!-- 編輯 -->
           <template #Edit="{ item }">
-            <v-btn icon @click="edit(item)">
+            <v-btn
+              v-permission="'userMgt_edit'"
+              icon
+              @click="edit(item)"
+            >
               <v-icon size="20" color="primary">
                 mdi-pencil
               </v-icon>
@@ -228,7 +238,6 @@ export default {
       pageSize: 10,
       totalCount: 0
     }
-
   }),
 
   mounted () {
@@ -252,6 +261,7 @@ export default {
         this.listLoading = false
       }
     },
+
     // [ 新增 ]
     add () {
       this.dialog.add.show = true

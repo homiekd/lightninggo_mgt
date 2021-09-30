@@ -1,12 +1,13 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <base-searchbar title="權限列表">
+      <base-searchbar title="權限列表" @search="search">
         <v-row dense>
           <!-- 權限名稱 -->
           <v-col cols="6" md="3">
             <v-row dense>
               <base-input
+                v-model="filter.name"
                 outlined
                 hide-details
                 label="權限名稱"
@@ -17,6 +18,7 @@
           <v-col cols="6" md="3">
             <v-row dense>
               <base-input
+                v-model="filter.code"
                 outlined
                 hide-details
                 label="權限編碼"
@@ -33,6 +35,7 @@
         <!-- 標題尾端插槽 -->
         <template #title-append>
           <v-btn
+            v-permission="'permissionMgt_add'"
             color="white"
             class="primary--text"
             @click="add"
@@ -42,6 +45,7 @@
         </template>
 
         <base-table
+          :loading="listLoading"
           :headers="headers"
           :items="dataSource"
           mobile-breakpoint="0"
@@ -58,7 +62,11 @@
 
           <!-- 編輯 -->
           <template #Edit="{ item }">
-            <v-btn icon @click="edit(item)">
+            <v-btn
+              v-permission="'permissionMgt_edit'"
+              icon
+              @click="edit(item)"
+            >
               <v-icon size="20" color="primary">
                 mdi-pencil
               </v-icon>
@@ -68,10 +76,10 @@
 
         <!-- 分頁 -->
         <base-pagination
-          v-model="filter.PageIndex"
+          v-model="filter.pageIndex"
           class="mt-6"
-          :page-size.sync="filter.PageSize"
-          :page-count="filter.TotalCount"
+          :page-size.sync="filter.pageSize"
+          :page-count="filter.totalCount"
           @change="changePage"
         ></base-pagination>
       </base-card>
@@ -79,9 +87,18 @@
 
     <!-- dialog 彈窗 -->
     <!-- 新增 -->
-    <PermissionMgtAdd v-model="dialog.add.show"></PermissionMgtAdd>
+    <PermissionMgtAdd
+      v-model="dialog.add.show"
+      @afterSubmit="dataBind"
+    ></PermissionMgtAdd>
+
     <!-- 編輯 -->
-    <PermissionMgtEdit v-model="dialog.edit.show"></PermissionMgtEdit>
+    <PermissionMgtEdit
+      :id.sync="dialog.edit.id"
+      v-model="dialog.edit.show"
+      is-edit
+      @afterSubmit="dataBind"
+    ></PermissionMgtEdit>
   </v-row>
 </template>
 
@@ -99,6 +116,8 @@ export default {
   },
 
   data: () => ({
+    listLoading: false,
+
     headers: [
       {
         text: '權限名稱',
@@ -155,15 +174,16 @@ export default {
 
     dialog: {
       add: { show: false },
-      edit: { show: false }
+      edit: { show: false, id: -1 }
     },
 
     filter: {
-      PageIndex: 1,
-      PageSize: 10,
-      TotalCount: 0
+      name: '',
+      code: '',
+      pageIndex: 1,
+      pageSize: 10,
+      totalCount: 0
     }
-
   }),
 
   mounted () {
@@ -173,27 +193,42 @@ export default {
   methods: {
     // [ 取權限列表 ]
     async dataBind () {
-      const dataResponse = await SysPermissionService.getMany(this.filter)
-      await this.sharedResponse(dataResponse, { useSuccessMessage: false })
-      console.log('dataResponse.data: ', dataResponse.data)
-      this.dataSource = dataResponse.data.data
+      try {
+        this.listLoading = true
+
+        const dataResponse = await SysPermissionService.getMany(this.filter)
+        await this.sharedResponse(dataResponse, { useSuccessMessage: false })
+
+        this.dataSource = dataResponse.data.data
+        this.filter.totalCount = dataResponse.data.totalCount
+      } catch (error) {
+        this.showError(error)
+      } finally {
+        this.listLoading = false
+      }
     },
+
     // [ 新增 ]
     add () {
-      console.log('新增權限')
       this.dialog.add.show = true
     },
 
     // [ 編輯 ]
-    edit (item) {
-      console.log('編輯權限')
+    edit (data) {
+      this.dialog.edit.id = data.id
       this.dialog.edit.show = true
+    },
+
+    // [ 搜尋 ]
+    search () {
+      this.filter.pageIndex = 1
+      this.dataBind()
     },
 
     // [ 換頁 ]
     changePage (data) {
-      console.log('換頁')
-      this.filter.PageIndex = data
+      this.filter.pageIndex = data
+      this.dataBind()
     }
   }
 }

@@ -36,6 +36,7 @@
         <!-- 標題尾端插槽 -->
         <template #title-append>
           <v-btn
+            v-permission="'roleMgt_add'"
             color="white"
             class="primary--text"
             @click="add"
@@ -52,7 +53,12 @@
         >
           <!-- 刪除按鈕 -->
           <template #Remove="{ item }">
-            <v-btn icon color="red" @click="remove(item)">
+            <v-btn
+              v-permission="'roleMgt_remove'"
+              icon
+              color="red"
+              @click="remove(item)"
+            >
               <v-icon size="20">
                 mdi-trash-can-outline
               </v-icon>
@@ -71,7 +77,11 @@
 
           <!-- 編輯 -->
           <template #Edit="{ item }">
-            <v-btn icon @click="edit(item)">
+            <v-btn
+              v-permission="'roleMgt_edit'"
+              icon
+              @click="edit(item)"
+            >
               <v-icon size="20" color="primary">
                 mdi-pencil
               </v-icon>
@@ -180,7 +190,7 @@ export default {
       description: '',
       pageIndex: 1,
       pageSize: 10,
-      potalCount: 0
+      totalCount: 0
     }
 
   }),

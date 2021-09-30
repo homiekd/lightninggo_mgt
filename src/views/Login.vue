@@ -71,7 +71,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import SysUserService from '@/services/sysUser'
+import snackbar from '@/components/snackbar'
 
 export default {
   name: 'Login',
@@ -94,31 +96,37 @@ export default {
     }
   },
   methods: {
+    ...mapActions('user', [
+      'clearToken',
+      'updateAllSessionStorange'
+    ]),
+
     validate () {
       if (this.$refs.form.validate()) {
         this.login()
       }
     },
     async login () {
-      const dataResponse = await SysUserService.login(this.sysUser)
-      if (dataResponse && dataResponse.status === 200 && dataResponse.data.code === 200) {
-        const loginData = dataResponse.data.data
-        const token = loginData.token
-        const username = loginData.username
-        const roles = loginData.roles
-        let rolesArr = []
-        if (roles) {
-          rolesArr = roles.split(';')
+      try {
+        const dataResponse = await SysUserService.login(this.sysUser)
+        await this.sharedResponse(dataResponse, { useSuccessMessage: false })
+
+        // 檢查後端Result code 不等於200,就拋出錯誤訊息
+        if (dataResponse.data.code !== 200) {
+          snackbar.message({
+            color: 'error',
+            message: dataResponse.data.data
+          })
+          return
         }
-        this.$store.commit('setToken', token)
-        this.$store.commit('setName', username)
-        this.$store.commit('setRoles', rolesArr)
+
+        // 用戶資訊 存入 store
+        const loginData = dataResponse.data.data
+        if (loginData.token) this.updateAllSessionStorange(loginData)
+
         this.$router.push('/dashboard')
-      } else {
-        this.$message({
-          color: 'error',
-          message: dataResponse.data.data == null ? dataResponse.data.message : dataResponse.data.data
-        })
+      } catch (error) {
+        this.showError(error)
       }
     }
   }

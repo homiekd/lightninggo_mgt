@@ -9,8 +9,8 @@ axios.defaults.timeout = 600000
 // [ Request 攔截器 ]
 axios.interceptors.request.use((config) => {
   // 如果有 token 則帶入 header
-  if (store.state.token) {
-    config.headers.Authorization = `Bearer ${store.state.token}`
+  if (store.state.user.accessToken) {
+    config.headers.Authorization = `Bearer ${store.state.user.accessToken}`
   }
   return config
 }, (err) => {
@@ -31,7 +31,7 @@ axios.interceptors.response.use((response) => {
     switch (error.response.status) {
       case 401:
         // 可能 token 失效所以進行清除
-        sessionStorage.clear()
+        localStorage.clear()
         router.replace('/login')
         snackbar.message({
           color: 'error',
@@ -40,7 +40,7 @@ axios.interceptors.response.use((response) => {
         break
       case 403:
         // 可能 token 失效所以進行清除
-        sessionStorage.clear()
+        localStorage.clear()
         router.replace('/login')
         snackbar.message({
           color: 'error',

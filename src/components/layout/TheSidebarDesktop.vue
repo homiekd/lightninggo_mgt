@@ -11,26 +11,26 @@
       <v-list class="sidebar">
         <v-list-group
           v-for="(item) in menu"
-          :key="item.title"
-          :prepend-icon="item.action"
-          :group="item.group"
+          :key="item.name"
+          :prepend-icon="item.icon"
+          :group="item.url"
           no-action
           color="white"
         >
           <template #activator>
             <v-list-item-content>
-              <v-list-item-title class="text-body-2" v-text="item.title"></v-list-item-title>
+              <v-list-item-title class="text-body-2" v-text="item.name"></v-list-item-title>
             </v-list-item-content>
           </template>
 
           <v-list-item
-            v-for="child in item.children"
-            :key="child.title"
-            :to="child.path"
+            v-for="child in item.childPermissions"
+            :key="child.name"
+            :to="child.url"
             exact
           >
             <v-list-item-content>
-              <v-list-item-title class="text-body-2" v-text="child.title">
+              <v-list-item-title class="text-body-2" v-text="child.name">
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>

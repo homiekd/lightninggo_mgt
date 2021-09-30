@@ -9,7 +9,6 @@
     <template #body>
       <ValidationObserver ref="form">
         <v-row dense>
-          <!-- v-model="forms.CompanyID" -->
           <!-- 角色名稱 -->
           <v-col cols="12">
             <base-input
